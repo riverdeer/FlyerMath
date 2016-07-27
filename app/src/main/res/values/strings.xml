@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">FlyerMath</string>
+
+    //includes strings for math boxes
+    <string name="init_gas">Initial Fuel</string>
+    <string name="second_gas">Check Fuel</string>
+    <string name="init_time">Initial Time</string>
+    <string name="second_time">Check Time</string>
+    <string name="gas_unit">fuel (lbs)</string>
+    <string name="time_unit">  HHMM  </string>
+    <string name="fuelNow"></string>
+    <string name="timeNow"></string>
+    <string name="fuelNower"></string>
+    <string name="timeNower"></string>
+    <string name="clearBox"></string>
+
+
+    //timer buttons
+    <string name="timerStart">START</string>
+    <string name="timerStop">STOP</string>
+    <string name="timerClear">CLEAR</string>
+    <string name="timerNow">NOW</string>
+    <string name="calcButton">Math</string>
+    <string name="clearButton">Clear</string>
+
+
+    //result section strings
+    <string name="burnRate">Burn Rate (lbs/hr)</string>
+    <string name="burnoutTime">Burnout Time</string>
+    <string name="VFRTime">VFR Time</string>
+    <string name="IFRTime">IFR Time</string>
+    <string name="burnRateEdit"></string>
+    <string name="burnoutTimeEdit"></string>
+    <string name="VFRTimeEdit"></string>
+    <string name="IFRTimeEdit"></string>
+    <string name="clearResult"></string>
+
+    //exception strings
+    <string name="badFieldException">You must enter fuel in pounds</string>
+    <string name="badMathException">You must complete the numbers above!</string>
+
+</resources>

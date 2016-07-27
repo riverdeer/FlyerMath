@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tfbima.horse.flyermath2.MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:columnCount="3"
+    android:alignmentMode="alignBounds"
+    android:clickable="false">
+
+    <TextView
+        android:id="@+id/init_gas_label"
+        android:text="@string/init_gas"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_gravity="start|center_vertical" />
+
+    <EditText
+        android:id="@+id/init_gas"
+        android:hint="@string/gas_unit"
+        android:text="@string/fuelNow"
+        android:inputType="number"
+        android:maxLength="4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_gravity="start" />
+
+    <TextView
+        android:id="@+id/init_time_label"
+        android:text="@string/init_time"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:id="@+id/init_time"
+        android:hint="@string/time_unit"
+        android:text="@string/timeNow"
+        android:textSize="18sp"
+        android:maxLength="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        />
+
+    <Button
+        android:id="@+id/timenow1"
+        android:text="@string/timerNow"
+        android:onClick="stateNow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="2"
+        android:layout_gravity="end|bottom" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:text="@string/second_gas"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:layout_gravity="center_vertical" />
+
+    <EditText
+        android:id="@+id/second_gas"
+        android:hint="@string/gas_unit"
+        android:text="@string/fuelNower"
+        android:inputType="number"
+        android:maxLength="4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="4"
+        android:layout_column="0"
+        android:layout_gravity="start" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/second_time"
+        android:textSize="20sp"
+        android:layout_row="3"
+        android:layout_column="1"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:id="@+id/second_time"
+        android:hint="@string/time_unit"
+        android:text="@string/timeNower"
+        android:inputType="time"
+        android:textSize="18sp"
+        android:maxLength="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="4"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false"/>
+
+
+    <Button
+        android:id="@+id/timenow2"
+        android:text="@string/timerNow"
+        android:onClick="stateNow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="3"
+        android:layout_column="2"
+        android:layout_gravity="end|bottom" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_row="5"
+        android:layout_column="0"/>
+
+    <Button
+        android:id="@+id/startbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="6"
+        android:layout_column="0"
+        android:text="@string/timerStart"
+        android:onClick="startTimer"
+        android:layout_gravity="start|center" />
+
+    <Button
+        android:id="@+id/stopbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="6"
+        android:layout_column="01"
+        android:text="@string/timerStop"
+        android:onClick="stopTimer"
+        android:layout_gravity="end|center" />
+
+    <Chronometer
+        android:id="@+id/timer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="6"
+        android:layout_column="2"
+        android:textSize="20sp"
+        android:layout_gravity="end|center" />
+
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_row="7"
+        android:layout_column="0"
+        />
+
+    <TextView
+        android:id="@+id/burnRate"
+        android:text="@string/burnRate"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="8"
+        android:layout_column="0"
+        android:layout_gravity="start|center_vertical" />
+
+    <EditText
+        android:id="@+id/burnRateEdit"
+        android:hint="@string/gas_unit"
+        android:text="@string/burnRateEdit"
+        android:inputType="text"
+        android:maxLength="4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="8"
+        android:layout_column="1"
+        android:layout_columnSpan="1"
+        android:layout_gravity="end|center_vertical"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false"/>
+
+    <Button
+        android:id="@+id/calcButton"
+        android:text="@string/calcButton"
+        android:onClick="mathCalc1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="8"
+        android:layout_column="2"
+        android:layout_gravity="end|center" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_row="9"
+        android:layout_column="0"
+        />
+    <TextView
+        android:id="@+id/burnout"
+        android:text="@string/burnoutTime"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="10"
+        android:layout_column="0"
+        android:layout_columnSpan="1"
+        android:layout_gravity="start" />
+
+    <EditText
+        android:id="@+id/burnoutEdit"
+        android:hint="@string/time_unit"
+        android:text="@string/burnoutTimeEdit"
+        android:inputType="number"
+        android:maxLength="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="10"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_row="11"
+        android:layout_column="0"
+        />
+
+    <TextView
+        android:id="@+id/VFRTime"
+        android:text="@string/VFRTime"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="12"
+        android:layout_column="0"
+        android:layout_gravity="start" />
+
+    <EditText
+        android:id="@+id/VFRTimeEdit"
+        android:hint="@string/time_unit"
+        android:text="@string/IFRTimeEdit"
+        android:inputType="number"
+        android:maxLength="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="12"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_row="13"
+        android:layout_column="0"
+        />
+
+    <TextView
+        android:id="@+id/IFRTime"
+        android:text="@string/IFRTime"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="14"
+        android:layout_column="0"
+        android:layout_gravity="start" />
+
+    <EditText
+        android:id="@+id/IFRTimeEdit"
+        android:hint="@string/time_unit"
+        android:text="@string/VFRTimeEdit"
+        android:inputType="number"
+        android:maxLength="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="14"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:cursorVisible="false"/>
+
+    <Button
+        android:id="@+id/clearButton"
+        android:text="@string/clearButton"
+        android:onClick="clearAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="14"
+        android:layout_column="2"
+        android:layout_gravity="end|center|top"/>
+
+</GridLayout>
