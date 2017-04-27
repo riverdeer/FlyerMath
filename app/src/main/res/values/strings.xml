@@ -34,6 +34,7 @@
     <string name="VFRTimeEdit"></string>
     <string name="IFRTimeEdit"></string>
     <string name="clearResult"></string>
+    <string name="takeTime">You must take the fuel check at more than 15 minutes to be accurate</string>
 
     //exception strings
     <string name="badFieldException">You must enter fuel in pounds</string>

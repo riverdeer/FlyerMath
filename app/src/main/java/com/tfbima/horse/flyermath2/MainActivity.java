@@ -9,18 +9,20 @@
 package com.tfbima.horse.flyermath2;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText VFRTimeET;
     private EditText IFRTimeET;
 
+    public int checkDuration;
+
     private FuelState a = new FuelState();
     private FuelState b = new FuelState();
     private FuelState c = new FuelState();
@@ -49,16 +53,31 @@ public class MainActivity extends AppCompatActivity {
     private static final String TimeTwo = "TIME_TWO";
     private static final String TimestampOne = "TIMESTAMP_ONE";
     private static final String TimestampTwo = "TIMESTAMP_TWO";
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//This will eventually be the saved instance state
-        if(savedInstanceState == null){
+        burnOutTimeET = (EditText) findViewById(R.id.burnoutEdit);
+        IFRTimeET = (EditText) findViewById(R.id.IFRTimeEdit);
+        VFRTimeET = (EditText) findViewById(R.id.VFRTimeEdit);
+        burnRateET = (EditText) findViewById(R.id.burnRateEdit);
+        fuelNowET = (EditText) findViewById(R.id.init_gas);
+        fuelNowerET = (EditText) findViewById(R.id.second_gas);
+        timeNowET = (EditText) findViewById(R.id.init_time);
+        timeNowerET = (EditText) findViewById(R.id.second_time);
+        checkDuration = (int) 899999;
+
+        //This will eventually be the saved instance state
+        if (savedInstanceState == null) {
             // Just started
             a.setTimestamp(c.getTimestamp());
             b.setTimestamp(c.getTimestamp());
@@ -71,34 +90,43 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // App is being restored
 
-           // a.setTimestamp();
-           // b.setTimestamp(savedInstanceState.getSerializable(TimestampTwo));
-
-            Calendar bCalendar = (Calendar) savedInstanceState.getSerializable(TimestampTwo);
             Calendar aCalendar = (Calendar) savedInstanceState.getSerializable(TimestampOne);
+            Calendar bCalendar = (Calendar) savedInstanceState.getSerializable(TimestampTwo);
 
             a.setTimestamp(aCalendar);
             b.setTimestamp(bCalendar);
+            String k = dateMaker(a.getTimestamp());
+            timeNowET.setText(k);
+            String l = dateMaker(b.getTimestamp());
+            timeNowerET.setText(l);
 
-            a.setFuelPounds(savedInstanceState.getInt(FuelOne));
-            b.setFuelPounds(savedInstanceState.getInt(FuelTwo));
+            a.setFuelPounds(savedInstanceState.getLong(FuelOne));
+            b.setFuelPounds(savedInstanceState.getLong(FuelTwo));
+            fuelNowET.setText(String.valueOf(a.getFuelPounds()));
+            fuelNowerET.setText(String.valueOf(b.getFuelPounds()));
 
             a.setTimecheck(savedInstanceState.getLong(TimeOne));
             b.setTimecheck(savedInstanceState.getLong(TimeTwo));
 
         }
 
-        //
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
 
-        burnOutTimeET = (EditText) findViewById(R.id.burnoutEdit);
-        IFRTimeET = (EditText) findViewById(R.id.IFRTimeEdit);
-        VFRTimeET = (EditText) findViewById(R.id.VFRTimeEdit);
-        burnRateET = (EditText) findViewById(R.id.burnRateEdit);
-        fuelNowET = (EditText) findViewById(R.id.init_gas);
-        fuelNowerET = (EditText) findViewById(R.id.second_gas);
-        timeNowET = (EditText) findViewById(R.id.init_time);
-        timeNowerET = (EditText) findViewById(R.id.second_time);
+    protected void onSaveInstanceState(Bundle outState) {
 
+        outState.putSerializable(TimestampOne, a.getTimestamp());
+        outState.putSerializable(TimestampTwo, b.getTimestamp());
+
+        outState.putDouble(FuelOne, a.getFuelPounds());
+        outState.putDouble(FuelTwo, b.getFuelPounds());
+
+        outState.putLong(TimeOne, a.getTimecheck());
+        outState.putLong(TimeTwo, b.getTimecheck());
+
+        super.onSaveInstanceState(outState);
     }
 
     public void stateNow1(View view) {
@@ -106,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         //forms the fuel state for the first inputs
 
         try {
-            a.setFuelPounds(Integer.parseInt(fuelNowET.getText().toString()));
+            a.setFuelPounds(Long.parseLong(fuelNowET.getText().toString()));
             Calendar now = Calendar.getInstance();
             long timen = now.getTimeInMillis();
             String k = dateMaker(now);
@@ -117,11 +145,10 @@ public class MainActivity extends AppCompatActivity {
             ((Chronometer) findViewById(R.id.timer1)).setBase(SystemClock.elapsedRealtime());
             ((Chronometer) findViewById(R.id.timer1)).start();
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.this, getString(R.string.badFieldException), Toast.LENGTH_LONG).show();
         }
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.timenow1).getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
     }
@@ -130,28 +157,29 @@ public class MainActivity extends AppCompatActivity {
 
         //will form the fuel states for the second fields
 
-            try {
-                b.setFuelPounds(Integer.parseInt(fuelNowerET.getText().toString()));
-                Calendar now = Calendar.getInstance();
-                long timen = now.getTimeInMillis();
-                String k = dateMaker(now);
-                timeNowerET.setText(k);
-                b.setTimestamp(now);
-                b.setTimecheck(timen);
+        try {
+            b.setFuelPounds(Long.parseLong(fuelNowerET.getText().toString()));
+            Calendar now = Calendar.getInstance();
+            long timen = now.getTimeInMillis();
+            String k = dateMaker(now);
+            timeNowerET.setText(k);
+            b.setTimestamp(now);
+            b.setTimecheck(timen);
 
-                ((Chronometer) findViewById(R.id.timer1)).stop();
-            }
-            catch (Exception e) {
-                Toast.makeText(MainActivity.this, getString(R.string.badFieldException), Toast.LENGTH_LONG).show();
-            }
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            ((Chronometer) findViewById(R.id.timer1)).stop();
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, getString(R.string.badFieldException), Toast.LENGTH_LONG).show();
+        }
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.timenow2).getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
     }
 
-    //takes the calender input and returns the string format HH:mm
 
-    private String dateMaker(Calendar x){
+    private String dateMaker(Calendar x) {
+
+        //takes the calender input and returns the string format HH:mm
+
         int nowhour = x.get(Calendar.HOUR_OF_DAY);
         int nowmin = x.get(Calendar.MINUTE);
         String nowHour = String.format(Locale.ENGLISH, "%02d", nowhour);
@@ -159,46 +187,66 @@ public class MainActivity extends AppCompatActivity {
         return nowHour + ":" + nowMin;
     }
 
-    ///this will take the values set by the above and will calculate the needed data for the last 4 fields of the app
+    public void mathCalc1(View view) {
 
-    public void mathCalc1(View view){
+        //this will take the values set by the above and will calculate the needed data for the last
+        //4 fields of the app
+
         try {
-            int fuelBurn = a.getFuelPounds() - b.getFuelPounds();
-            System.out.println(fuelBurn + " is total fuel burn int");
+            double fuelBurn = a.getFuelPounds() - b.getFuelPounds();
+            System.out.println(fuelBurn + " is total fuel burn as a double");
 
             long timeChangeLong = b.getTimecheck() - a.getTimecheck();
-            System.out.println(timeChangeLong + " is the difference between the time stamps");
-            int timeChangeInMillis = (int) timeChangeLong;
-            System.out.println(timeChangeInMillis + " is int of timecheck math in millis");
+            System.out.println(timeChangeLong + " is the difference between the time stamps as long");
+            int timeChangeInt = (int) timeChangeLong;
+            int timeChangeInSecs = timeChangeInt / (int) 1000;
+            System.out.println(timeChangeInSecs + " is int of timecheck math in secs");
 
-            int timeChange = timeChangeInMillis / 60000;
-            System.out.println(timeChange + " is int of timecheck math in min");
+            if (timeChangeInt > checkDuration) {
 
-            int fuelpermin = fuelBurn / timeChange;
-            System.out.println(fuelpermin + " is int of fuelburn by time change, or fuel per min");
-            int fuelperhour = fuelpermin * 60;
-            String burnhourly = Long.toString(fuelperhour);
-            System.out.println(burnhourly + " is int of fuel burn lbs per hour");
-            burnRateET.setText(burnhourly);
+                //double timeChange = timeChangeInSecs / (double) 60000;
+                //System.out.println(timeChange + " is double of timecheck math in min");
 
-            Calendar grossTime = b.getTimestamp();
-            int grossRemaining = (b.getFuelPounds() / fuelpermin);
-            System.out.println(grossRemaining + " is gross remaining");
-            grossTime.add(Calendar.MINUTE, grossRemaining);
-            String gross = dateMaker(grossTime);
-            burnOutTimeET.setText(gross);
-            System.out.println(gross + " is gross time");
+                float fuelpersec = (float) fuelBurn / timeChangeInSecs;
+                System.out.println(fuelpersec + " is float of fuelburn by time change, or fuel per sec");
+                double fuelperhour = (fuelpersec * 3600) +  0.5;
+                int fuelperhourDisplay = (int) fuelperhour;
+                    if (fuelperhourDisplay > 999) {
+                    String burnhourly = Integer.toString(fuelperhourDisplay);
+                    System.out.println(burnhourly + " is long of fuel burn lbs per hour");
+                    burnRateET.setText(burnhourly);
+                }
+                else {
+                    String burnhourly = Integer.toString(fuelperhourDisplay);
+                    System.out.println(burnhourly + " is long of fuel burn lbs per hour");
+                    String smallburnhourly = "0" + burnhourly;
+                    burnRateET.setText(smallburnhourly);
+                }
 
-            grossTime.add(Calendar.MINUTE, -20);
-            String vfr = dateMaker(grossTime);
-            VFRTimeET.setText(vfr);
+                Calendar grossTime = b.getTimestamp();
+                /*long longgrossRemaining = (b.getFuelPounds() / fuelpersec);
+                System.out.println(longgrossRemaining + " is long gross remaining");
+                int grossRemaining = (int) longgrossRemaining;*/
+                int grossRemaining = (int) (b.getFuelPounds() / fuelpersec);
+                System.out.println(grossRemaining + " is gross remaining");
+                int grossRemainingMin = grossRemaining / 60;
+                System.out.println(grossRemainingMin + " is gross remaining min");
+                grossTime.add(Calendar.MINUTE, grossRemainingMin);
+                String gross = dateMaker(grossTime);
+                burnOutTimeET.setText(gross);
+                System.out.println(gross + " is gross time");
 
-            grossTime.add(Calendar.MINUTE, -10);
-            String ifr = dateMaker(grossTime);
-            IFRTimeET.setText(ifr);
+                grossTime.add(Calendar.MINUTE, -20);
+                String vfr = dateMaker(grossTime);
+                VFRTimeET.setText(vfr);
 
-        }
-        catch (Exception e){
+                grossTime.add(Calendar.MINUTE, -10);
+                String ifr = dateMaker(grossTime);
+                IFRTimeET.setText(ifr);
+            } else {
+                Toast.makeText(MainActivity.this, "WORDS", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
             Toast.makeText(MainActivity.this, getString(R.string.badMathException), Toast.LENGTH_LONG).show();
         }
     }
@@ -220,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         ((Chronometer) findViewById(R.id.timer1)).stop();
     }
 
-    public void clearAll ( View view) {
+    public void clearAll(View view) {
 
         //this clears the text fields, and resets ALL test variables.
 
@@ -249,18 +297,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void onSaveInstanceState(Bundle outState){
 
-        super.onSaveInstanceState(outState);
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        outState.putSerializable(TimestampOne, a.getTimestamp());
-        outState.putSerializable(TimestampTwo, a.getTimestamp());
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.tfbima.horse.flyermath2/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
 
-        outState.putInt(FuelOne, a.getFuelPounds());
-        outState.putInt(FuelTwo, b.getFuelPounds());
+    @Override
+    public void onStop() {
+        super.onStop();
 
-        outState.putLong(TimeOne, a.getTimecheck());
-        outState.putLong(TimeTwo, b.getTimecheck());
-
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.tfbima.horse.flyermath2/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

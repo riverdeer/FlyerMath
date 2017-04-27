@@ -7,16 +7,16 @@ import java.util.Calendar;
  * Fuel State is a snapshot of the fuel and time at the moment is it checked. This is useful, as it
  * allows us to store this data gathered from the various methods in the main activity.
  */
-class FuelState {
+public class FuelState {
 //declared the variables required for fuel states
-        private int fuelPounds;
+        private double fuelPounds;
         private long timecheck;
         private Calendar timestamp;
 //getters and setters for each variable
-        void setFuelPounds (int f){
+        void setFuelPounds (double f){
             fuelPounds = f;
         }
-        int getFuelPounds(){
+        double getFuelPounds(){
             return fuelPounds;
         }
 
